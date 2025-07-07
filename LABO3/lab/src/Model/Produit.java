@@ -42,6 +42,18 @@ public class Produit {
         this.quantite = quantite;
     }
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
+
     @Override
     public String toString() {
         return id + " - " + nom + " (" + categorie + ") : " + prix + " $ [" + quantite + " en stock]";
