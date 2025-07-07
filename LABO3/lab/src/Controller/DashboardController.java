@@ -3,6 +3,8 @@ package Controller;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import dao.*;
 import Model.Sale;
@@ -32,7 +34,7 @@ public class DashboardController {
             List<Store>    stores   = storeDao.listAll();
             System.out.println("\n=== Tableau de bord (UC3) ===");
 
-            // 1) Chiffre d’affaires par magasin
+            // 1) Chiffre d'affaires par magasin
             System.out.println("\n-- Chiffre d'affaires par magasin --");
             for (Store s : stores) {
                 double revenue = 0;
@@ -71,6 +73,39 @@ public class DashboardController {
         } catch (SQLException e) {
             System.out.println("Erreur UC3: " + e.getMessage());
         }
+    }
+
+    public Map<String, Object> getDashboardData() throws SQLException {
+        Map<String, Object> dashboard = new HashMap<>();
+        List<Store> stores = storeDao.listAll();
+
+        // 1) Chiffre d'affaires par magasin
+        Map<String, Double> revenueByStore = new HashMap<>();
+        for (Store s : stores) {
+            double revenue = 0;
+            List<Sale> sales = saleDao.getDao().queryForEq("store_id", s.getId());
+            for (Sale sale : sales) {
+                revenue += sale.getQuantity() * sale.getProduit().getPrix();
+            }
+            revenueByStore.put(s.getName(), revenue);
+        }
+        dashboard.put("revenueByStore", revenueByStore);
+
+        // 2) Alertes de rupture de stock
+        Map<String, String> stockAlerts = new HashMap<>();
+        for (Store s : stores) {
+            StringBuilder alert = new StringBuilder();
+            List<Stock> stocks = stockDao.listByStore(s);
+            for (Stock st : stocks) {
+                if (st.getQuantity() == 0) {
+                    alert.append(st.getProduit().getNom()).append(" ");
+                }
+            }
+            stockAlerts.put(s.getName(), alert.length() > 0 ? alert.toString().trim() : "aucune");
+        }
+        dashboard.put("stockAlerts", stockAlerts);
+
+        return dashboard;
     }
 
 }
