@@ -1,11 +1,12 @@
-# Utilise une image de base Java
+# Use Java 21 base image
 FROM openjdk:21-jdk-slim
 
-# Crée un dossier pour l'application
+# Create app directory
 WORKDIR /app
 
-# Copie le JAR dans l'image Docker
+# Copy the JAR and the lib/ folder
 COPY LAB3_LOG430.jar app.jar
+COPY lib/ lib/
 
-# Commande à exécuter quand le conteneur démarre
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Run with classpath including all dependencies
+ENTRYPOINT ["java", "-cp", "app.jar:lib/*", "Rest.ApiApplication"]
