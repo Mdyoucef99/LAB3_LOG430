@@ -29,7 +29,7 @@ public class StockRestController {
     }
 
     @GetMapping("/{id}/stock")
-    public ResponseEntity<List<Stock>> getStockByStore(@PathVariable int id) {
+    public ResponseEntity<List<Stock>> getStockByStore(@PathVariable("id") int id) {
         logger.info("Received request to get stock for store with id: {}", id);
         try {
             Store store = storeDao.findById(id);

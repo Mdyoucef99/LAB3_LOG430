@@ -39,7 +39,7 @@ public class ProduitRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Produit> getById(@PathVariable int id) {
+    public ResponseEntity<Produit> getById(@PathVariable("id") int id) {
         try {
             Produit p = produitDao.rechercherParId(id);
             if (p == null) {
@@ -62,7 +62,7 @@ public class ProduitRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produit> update(@PathVariable int id, @RequestBody Produit produit) {
+    public ResponseEntity<Produit> update(@PathVariable("id") int id, @RequestBody Produit produit) {
         try {
             Produit existing = produitDao.rechercherParId(id);
             if (existing == null) {
@@ -81,7 +81,7 @@ public class ProduitRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") int id) {
         try {
             Produit existing = produitDao.rechercherParId(id);
             if (existing == null) {
