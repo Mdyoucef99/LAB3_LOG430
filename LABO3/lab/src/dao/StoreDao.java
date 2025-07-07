@@ -6,13 +6,17 @@ import java.util.List;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import Model.Store;
 
+@Component
 public class StoreDao {
     private final Dao<Store,Integer> dao;
 
-    public StoreDao(ConnectionSource cs) throws SQLException {
+    @Autowired
+    public StoreDao(com.j256.ormlite.support.ConnectionSource cs) throws SQLException {
         this.dao = DaoManager.createDao(cs, Store.class);
     }
 

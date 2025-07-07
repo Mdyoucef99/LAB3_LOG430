@@ -7,14 +7,18 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
+import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import Model.Produit;
 import Model.Stock;
 import Model.Store;
 
+@Component
 public class StockDao {
       private final Dao<Stock,Void> dao;
 
+    @Autowired
     public StockDao(ConnectionSource cs) throws SQLException {
         this.dao = DaoManager.createDao(cs, Stock.class);
     }
