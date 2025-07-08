@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: LAB3 API
+  version: 1.0.0
+  description: Documentation simple des endpoints REST du projet LAB3
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /produits:
+    get:
+      summary: Liste tous les produits
+      responses:
+        '200':
+          description: Liste des produits
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produit'
+              example:
+                - id: 1
+                  nom: "Produit A"
+                  prix: 10.0
+                - id: 2
+                  nom: "Produit B"
+                  prix: 20.0
+    post:
+      summary: Ajouter un produit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Produit'
+            example:
+              nom: "Produit C"
+              prix: 15.0
+      responses:
+        '201':
+          description: Produit créé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produit'
+              example:
+                id: 3
+                nom: "Produit C"
+                prix: 15.0
+  /stock:
+    get:
+      summary: Liste le stock de tous les produits
+      responses:
+        '200':
+          description: Liste du stock
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Stock'
+              example:
+                - produitId: 1
+                  quantite: 100
+                - produitId: 2
+                  quantite: 50
+  /ventes:
+    post:
+      summary: Enregistrer une vente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sale'
+            example:
+              produitId: 1
+              quantite: 2
+      responses:
+        '201':
+          description: Vente enregistrée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sale'
+              example:
+                id: 1
+                produitId: 1
+                quantite: 2
+                date: "2024-06-01"
+  /rapports:
+    get:
+      summary: Générer un rapport de ventes
+      responses:
+        '200':
+          description: Rapport de ventes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaleReport'
+              example:
+                totalVentes: 100
+                totalMontant: 1500.0
+  /dashboard:
+    get:
+      summary: Vue d'ensemble du dashboard
+      responses:
+        '200':
+          description: Données du dashboard
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nbProduits:
+                    type: integer
+                  nbVentes:
+                    type: integer
+                  stockTotal:
+                    type: integer
+              example:
+                nbProduits: 10
+                nbVentes: 50
+                stockTotal: 500
+components:
+  schemas:
+    Produit:
+      type: object
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+        prix:
+          type: number
+          format: float
+    Stock:
+      type: object
+      properties:
+        produitId:
+          type: integer
+        quantite:
+          type: integer
+    Sale:
+      type: object
+      properties:
+        id:
+          type: integer
+        produitId:
+          type: integer
+        quantite:
+          type: integer
+        date:
+          type: string
+          format: date
+    SaleReport:
+      type: object
+      properties:
+        totalVentes:
+          type: integer
+        totalMontant:
+          type: number
+          format: float 
