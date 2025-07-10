@@ -9,4 +9,4 @@ COPY LAB3_LOG430.jar app.jar
 COPY lib/ lib/
 
 # Run with classpath including all dependencies
-ENTRYPOINT ["java", "-cp", "app.jar:lib/*", "Rest.ApiApplication"]
+ENTRYPOINT ["java", "-cp", "app.jar:lib/*", "-Dspring.profiles.active=docker", "Rest.ApiApplication"]
