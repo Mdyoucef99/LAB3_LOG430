@@ -10,6 +10,8 @@ services:
       POSTGRES_PASSWORD: magasinpswd
     volumes:
       - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   api:
     build: .
@@ -17,7 +19,11 @@ services:
     depends_on:
       - db
     environment:
-      DB_HOST: db
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/magasin
+      SPRING_DATASOURCE_USERNAME: magasin_user
+      SPRING_DATASOURCE_PASSWORD: magasinpswd
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
     stdin_open: true
     tty: true
     ports:
