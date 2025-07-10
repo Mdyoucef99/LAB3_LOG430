@@ -4,14 +4,14 @@ info:
   version: 1.0.0
   description: Documentation simple des endpoints REST du projet LAB3
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:8080
 paths:
-  /produits:
+  /api/v1/products:
     get:
-      summary: Liste tous les produits
+      summary: Récupère la liste de tous les produits
       responses:
         '200':
-          description: Liste des produits
+          description: Tableau de produits
           content:
             application/json:
               schema:
@@ -26,7 +26,7 @@ paths:
                   nom: "Produit B"
                   prix: 20.0
     post:
-      summary: Ajouter un produit
+      summary: Ajoute un nouveau produit
       requestBody:
         required: true
         content:
@@ -47,12 +47,52 @@ paths:
                 id: 3
                 nom: "Produit C"
                 prix: 15.0
-  /stock:
+  /api/v1/products/{id}:
     get:
-      summary: Liste le stock de tous les produits
+      summary: Récupère un produit par son identifiant
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
-          description: Liste du stock
+          description: Détail du produit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produit'
+              example:
+                id: 1
+                nom: "Produit A"
+                prix: 10.0
+    delete:
+      summary: Supprime un produit
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Confirmation de suppression
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "Produit supprimé avec succès"
+  /api/v1/stock:
+    get:
+      summary: Récupère le stock de tous les produits
+      responses:
+        '200':
+          description: Tableau de stocks
           content:
             application/json:
               schema:
@@ -64,36 +104,48 @@ paths:
                   quantite: 100
                 - produitId: 2
                   quantite: 50
-  /ventes:
-    post:
-      summary: Enregistrer une vente
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Sale'
-            example:
-              produitId: 1
-              quantite: 2
+  /api/v1/stock/{produitId}:
+    get:
+      summary: Récupère le stock d'un produit spécifique
+      parameters:
+        - in: path
+          name: produitId
+          required: true
+          schema:
+            type: integer
       responses:
-        '201':
-          description: Vente enregistrée
+        '200':
+          description: Détail du stock
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Sale'
+                $ref: '#/components/schemas/Stock'
               example:
-                id: 1
                 produitId: 1
-                quantite: 2
-                date: "2024-06-01"
-  /rapports:
+                quantite: 100
+  /api/v1/sales:
     get:
-      summary: Générer un rapport de ventes
+      summary: Liste toutes les ventes
       responses:
         '200':
-          description: Rapport de ventes
+          description: Tableau de ventes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sale'
+              example:
+                - id: 1
+                  produitId: 1
+                  quantite: 2
+                  date: "2024-06-01"
+  /api/v1/reports/sales:
+    get:
+      summary: Génère un rapport de ventes consolidé
+      responses:
+        '200':
+          description: Rapport de ventes (totaux, etc.)
           content:
             application/json:
               schema:
@@ -101,12 +153,12 @@ paths:
               example:
                 totalVentes: 100
                 totalMontant: 1500.0
-  /dashboard:
+  /api/v1/dashboard:
     get:
-      summary: Vue d'ensemble du dashboard
+      summary: Vue d'ensemble du dashboard (statistiques globales)
       responses:
         '200':
-          description: Données du dashboard
+          description: Données agrégées (nombre de produits, ventes, stock total, etc.)
           content:
             application/json:
               schema:

@@ -21,7 +21,6 @@ public class ReportRestController {
 
     public ReportRestController() {
         try {
-            // TODO: Factoriser la création de ConnectionSource pour éviter la duplication
             String host = System.getenv().getOrDefault("DB_HOST", "localhost");
             String databaseUrl = "jdbc:postgresql://" + host + ":5432/magasin";
             String user = "magasin_user";
