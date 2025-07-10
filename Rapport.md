@@ -26,11 +26,6 @@ Voici la liste des principaux endpoints exposés par l'API du projet Lab 3.
   - `id` (path, integer) : identifiant du produit
 - **Réponse :** Détail du produit
 
-### DELETE /api/v1/products/{id}
-- **Description :** Supprime un produit.
-- **Paramètre :**
-  - `id` (path, integer)
-- **Réponse :** Confirmation de suppression
 
 ---
 
